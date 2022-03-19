@@ -187,3 +187,23 @@ describe('GET /api/games', function () {
             });
     });
 });
+
+/**
+ * Testing populate 
+ */
+ describe('GET /api/games/populate', function () {
+
+    it('respond with 200 and ok if populate success', function (done) {
+        request(app)
+            .post('/api/games/populate')
+            .send({})
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end((err, result) => {
+                if (err) return done(err);
+                assert.strictEqual(result.body, "ok");
+                done();
+            });
+    });
+});
