@@ -51,6 +51,20 @@ app.put('/api/games/:id', (req, res) => {
     });
 });
 
+app.post('/api/games/search', (req, res) => {
+  const { name, platform } = req.body;
+
+  if (!name && !platform) {
+    return res.redirect('/api/games');
+  }
+
+  return db.Game.findAll({ where: {name:name, platform:platform })
+    .then(games => res.send(games))
+    .catch((err) => {
+      console.log('***There was an error searching a game', JSON.stringify(err));
+      return res.status(400).send(err);
+    });
+});
 
 app.listen(3000, () => {
   console.log('Server is up on port 3000');

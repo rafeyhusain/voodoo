@@ -131,3 +131,59 @@ describe('GET /api/games', function () {
     });
 });
 
+/**
+ * Testing search for specified name and platform
+ */
+ describe('GET /api/games', function () {
+
+    it('respond with 200 and game that matches what we searched', function (done) {
+        let data = {
+            name: "Test App",
+            platform: "ios"
+        }
+
+        request(app)
+            .post('/api/games/search')
+            .send(data)
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end((err, result) => {
+                if (err) return done(err);
+                assert.strictEqual(result.body.publisherId, '1234567890');
+                assert.strictEqual(result.body.name, 'Test App');
+                assert.strictEqual(result.body.platform, 'ios');
+                assert.strictEqual(result.body.storeId, '1234');
+                assert.strictEqual(result.body.bundleId, 'test.bundle.id');
+                assert.strictEqual(result.body.appVersion, '1.0.0');
+                assert.strictEqual(result.body.isPublished, true);
+                done();
+            });
+    });
+
+    
+    it('respond with 200 and all games if we searched empty name and platform', function (done) {
+        let data = {
+            name: "",
+            platform: ""
+        }
+
+        request(app)
+            .post('/api/games/search')
+            .send(data)
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end((err, result) => {
+                if (err) return done(err);
+                assert.strictEqual(result.body.publisherId, '1234567890');
+                assert.strictEqual(result.body.name, 'Test App');
+                assert.strictEqual(result.body.platform, 'ios');
+                assert.strictEqual(result.body.storeId, '1234');
+                assert.strictEqual(result.body.bundleId, 'test.bundle.id');
+                assert.strictEqual(result.body.appVersion, '1.0.0');
+                assert.strictEqual(result.body.isPublished, true);
+                done();
+            });
+    });
+});
