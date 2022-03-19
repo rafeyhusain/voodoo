@@ -60,11 +60,27 @@ Many other applications at Voodoo will use consume this API.
 We are planning to put this project in production. According to you, what are the missing pieces to make this project production ready? 
 Please elaborate an action plan.
 
+- Deploy NodeJS as AWS Lambda or AWS Fargate for better scalability and availablity
+- Use a frontend server like NGINX or AWS S3 static sites for static file serving
+- Add logging in backend code using DataDog, NewRelic or some other tools like Sentry with Node which records, reports, and emails you whenever the server crashes due to an error in the source code.
+- Routes should be placed in separate route files
+- EsLint and tests should be integrated using pre-commit husky hooks
+- GitHub should have EsLint and tests hooks
+- Secure Express apps by setting various helmet HTTP headers
+- Do rate limiting with Express Rate Limit
+- Establish CORS support using cors module
+
+
 #### Question 2:
 Let's pretend our data team is now delivering new files every day into the S3 bucket, and our service needs to ingest those files every day through the populate API. Could you describe a suitable solution to automate this?
 Feel free to propose architectural changes.
 
+- The solution is to schedule a daily cron job which runs ETL script and loads data into database
+
+
 #### Question 3:
 Both the current database schema and the files dropped in the S3 bucket are not optimal.
 How would you improve them?
+
+- For database we could select MongoDB and ingest all the data that is S3 bucket. If using SQL database is a priority and there are more relationships, we have to normalize Game table
 
